@@ -63,7 +63,7 @@ public class DemoApplication {
   String send() {
     try {
       new Thread(() -> {
-        for(int i=0; i<1000; ++i) {
+        for(int i=0; i<2; ++i) {
           try {
             Thread.sleep(1000);
             jmsTemplate.convertAndSend("DEV.QUEUE.1", messageGenerator.generateMessageType(false, "" + i + " " + Thread.currentThread().getId()));
