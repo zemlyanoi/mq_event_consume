@@ -52,3 +52,6 @@ To send test message to queue use the following command:
 curl localhost:8080/send
 
 ```
+
+Open a browser and navigate to "http://localhost:8000/#/cluster/default/topic/n/replication/" to view messages.
+Proof-of-concept Github repository, not intended for deployment
