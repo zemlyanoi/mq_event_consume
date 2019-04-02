@@ -20,8 +20,9 @@ Docker containers for Kafka and other tools are provided by the [confluent open 
 To start all confluent platform services with Kafka and IBM-MQ you can use the following command:
 
 ```
-docker-compose up -d confluent-kafka/docker-compose.yml
+cd docker
 
+docker-compose up -d confluent-kafka/docker-compose.yml
 ```
 
 ## IBM MQ
@@ -42,14 +43,12 @@ To start test application use command:
 cd build/libs
 
 java -jar demo-0.0.1-SNAPSHOT.jar
- 
 
 ```
 
 To send test message to queue use the following command:
 
 ```
-
 curl localhost:8080/send
 
 ```
