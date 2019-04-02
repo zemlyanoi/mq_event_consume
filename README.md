@@ -1,6 +1,6 @@
 # cares-platform-integration
 
-A proof of concept (POC) for synchronizing data between CARES and CWS/CMS. CARES is represented by an api connected to a postgresql database. CWS/CMS is its usual self, but in development is represented by a mock service.
+A proof of concept (POC) for synchronizing data between Neutron and CWS/CMS.
 
 ## Components
 
