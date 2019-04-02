@@ -26,9 +26,6 @@ public class Producer {
   @Value("${app.topic.foo}")
   private String topic;
 
-  @Autowired
-  public CacheManager cacheManager;
-
   public void processMessage(MsgType message) {
     if (message == null || message.getTrans() == null) {
       return;
@@ -38,7 +35,6 @@ public class Producer {
       transactionEvent.getMessages().add(message);
     } else {
       transactionEvent.getMessages().add(message);
-      cacheManager.getCache("event").putIfAbsent(transactionEvent.getMessages().get(0).getTrans().getCmitLSN(), transactionEvent);
       kafkaTemplate.send(topic, transactionEvent.getMessages().get(0).getTrans().getCmitLSN() ,new Gson().toJson(transactionEvent));
       transactionEvent.getMessages().clear();
       kafkaTemplate.setProducerListener(new ProducerListener() {
@@ -49,9 +45,6 @@ public class Producer {
             logger.info("EMPTY CACHE");
             return;
           }
-          logger.info("CACHE  >>>>>>>>>>> " + cacheManager.getCache("event").get(transactionEvent.getMessages().get(0).getTrans().getCmitLSN()).get());
-          cacheManager.getCache("event").evict(transactionEvent.getMessages().get(0).getTrans().getCmitLSN());
-          logger.info("CACHE  REMOVED >>>>>>>>>>> " + cacheManager.getCache("event").get(transactionEvent.getMessages().get(0).getTrans().getCmitLSN()));
         }
 
         @Override
