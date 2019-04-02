@@ -63,12 +63,15 @@ public class DemoApplication {
   String send() {
     try {
       new Thread(() -> {
-        for(int i=0; i<2; ++i) {
+        for (int i = 0; i < 2; ++i) {
           try {
             Thread.sleep(1000);
-            jmsTemplate.convertAndSend("DEV.QUEUE.1", messageGenerator.generateMessageType(false, "" + i + " " + Thread.currentThread().getId()));
-            jmsTemplate.convertAndSend("DEV.QUEUE.1", messageGenerator.generateMessageType(false, "" + i + " " + Thread.currentThread().getId()));
-            jmsTemplate.convertAndSend("DEV.QUEUE.1", messageGenerator.generateMessageType(true, "" + i + " " + Thread.currentThread().getId()));
+            jmsTemplate.convertAndSend("DEV.QUEUE.1", messageGenerator
+                .generateMessageType(false, "" + i + " " + Thread.currentThread().getId()));
+            jmsTemplate.convertAndSend("DEV.QUEUE.1", messageGenerator
+                .generateMessageType(false, "" + i + " " + Thread.currentThread().getId()));
+            jmsTemplate.convertAndSend("DEV.QUEUE.1", messageGenerator
+                .generateMessageType(true, "" + i + " " + Thread.currentThread().getId()));
           } catch (InterruptedException e) {
             e.printStackTrace();
           }

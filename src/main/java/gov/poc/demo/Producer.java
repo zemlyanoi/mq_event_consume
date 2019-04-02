@@ -9,13 +9,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.CacheManager;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.ProducerListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Producer {
+public class Producer implements ProducerListener {
 
   Logger logger = LoggerFactory.getLogger(Producer.class);
   private TransactionEvent transactionEvent = new TransactionEvent();
@@ -35,35 +34,32 @@ public class Producer {
       transactionEvent.getMessages().add(message);
     } else {
       transactionEvent.getMessages().add(message);
-      kafkaTemplate.send(topic, transactionEvent.getMessages().get(0).getTrans().getCmitLSN() ,new Gson().toJson(transactionEvent));
+      kafkaTemplate.send(topic, transactionEvent.getMessages().get(0).getTrans().getCmitLSN(),
+          new Gson().toJson(transactionEvent));
       transactionEvent.getMessages().clear();
-      kafkaTemplate.setProducerListener(new ProducerListener() {
-        @Override
-        public void onSuccess(ProducerRecord producerRecord, RecordMetadata recordMetadata) {
-          logger.info("SUCCESS");
-          if (transactionEvent.getMessages().isEmpty()) {
-            logger.info("EMPTY CACHE");
-            return;
-          }
-        }
-
-        @Override
-        public void onSuccess(String topic, Integer partition, Object key, Object value,
-            RecordMetadata recordMetadata) {
-          logger.info("SUCCESS2");
-        }
-
-        @Override
-        public void onError(ProducerRecord producerRecord, Exception exception) {
-          logger.info("ERROR");
-        }
-
-        @Override
-        public void onError(String topic, Integer partition, Object key, Object value,
-            Exception exception) {
-          logger.info("ERROR2");
-        }
-      });
+      kafkaTemplate.setProducerListener(this);
     }
+  }
+
+  @Override
+  public void onSuccess(ProducerRecord producerRecord, RecordMetadata recordMetadata) {
+    logger.info("SUCCESS");
+  }
+
+  @Override
+  public void onSuccess(String topic, Integer partition, Object key, Object value,
+      RecordMetadata recordMetadata) {
+    logger.info("SUCCESS2");
+  }
+
+  @Override
+  public void onError(ProducerRecord producerRecord, Exception exception) {
+    logger.info("ERROR");
+  }
+
+  @Override
+  public void onError(String topic, Integer partition, Object key, Object value,
+      Exception exception) {
+    logger.info("ERROR2");
   }
 }
