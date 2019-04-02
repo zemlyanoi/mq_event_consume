@@ -15,13 +15,14 @@ A proof of concept (POC) for synchronizing data between Neutron and CWS/CMS.
 
 Docker containers for Kafka and other tools are provided by the [confluent open source platform](https://www.confluent.io/product/confluent-open-source/)
 
-```
+
 
 To start all confluent platform services with Kafka and IBM-MQ you can use the following command:
 
 ```
 docker-compose up -d confluent-kafka/docker-compose.yml
 
+```
 
 ## IBM MQ
 [IBM MQ](#ibm_mq)
@@ -32,7 +33,6 @@ Data model is coming from MQ is described in resources/xsd/mqcap.xsd
 
 [MQ TO KAFKA](#mq_to_kafka)
 
-```
 
 To start test application use command:
 
@@ -51,3 +51,5 @@ To send test message to queue use the following command:
 ```
 
 curl localhost:8080/send
+
+```
